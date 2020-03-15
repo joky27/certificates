@@ -1,5 +1,7 @@
 ### Crawling
 1.using Zmap to save ips(listening to port 443) in csv format
+   - max-targets:the number of ips you want to collect
+   - output-file: the certificates to download
 ```sh
 $ apt install zmap
 $ zmap --bandwidth=10M --target-port=443 --max-targets=1000 --output-file=ips.csv
@@ -22,7 +24,7 @@ The results will be saved into corpus.csv and corpus_extension.csv.The structure
 ```
 
 ### Create self-signed CA 
-modify the content of v3_req in the openssl.cnf(if adding any v3 extensions)
+modify the content of v3_req in the openssl.cnf(if adding any v3 extensions:here add basic constraints and key usage)
 ```sh
  $ openssl genrsa -out ca.key 2048
  $ openssl req -x509 -new -nodes -key ca.key -days 1024 -out tmpCA.pem -extensions v3_req -config openssl.cnf
@@ -30,3 +32,23 @@ modify the content of v3_req in the openssl.cnf(if adding any v3 extensions)
  $ cat tmpCA.pem > rootCA.pem
 ```
 
+### Install certificate related tools
+including the install OpenSSL,PolarSSL(mbedtls),Gnutls,matrixSSL and the compile ways to collect code coverage
+firstly should fix the target folder in /scripts/install_tools.sh
+```sh
+ $ sh install_tools.sh
+```
+
+### Validation
+scripts/validation.sh including:
+   - validation command of 4 tools
+   - collect coverage of 3 tools
+   - extract code coverage of verification related fils(3 tools)
+   - extract function names from .info files
+
+### Collect coverage
+using openssl as an example
+firstly should fix the target path in /scripts/install_tools.sh
+```sh
+ $ sh collect.sh
+```
